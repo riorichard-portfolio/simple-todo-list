@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { CustomError, ErrorResponse } from "./interface";
 import { RESPONSE_CODE } from "../constants/response-code";
 
-export const errorHandler = (err: CustomError | Error, _: Request, res: Response, _: NextFunction) => {
+export const errorHandler = (err: CustomError | Error, _: Request, res: Response, __: NextFunction) => {
   const errorCode = (err as CustomError).statusCode || RESPONSE_CODE.INTERNAL_SERVER_ERROR;
   const message = (err as CustomError).message || 'Internal Server Error';
 
