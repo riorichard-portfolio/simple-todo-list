@@ -10,7 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "outDir": "dist"
   },
   "include": [
     "index.ts",
