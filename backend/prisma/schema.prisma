@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId       String   @id @default(uuid()) @map("user_id")
+  fullName     String   @map("full_name")
+  email        String   @unique @map("email")
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
+  todos        Todo[]
+
+  @@map("users")
+}
+
+model TodoCategory {
+  todoCategoryId String   @id @default(uuid()) @map("todo_category_id")
+  categoryTitle  String   @map("category_title")
+  createdAt      DateTime @default(now()) @map("created_at")
+  todos          Todo[]
+
+  @@map("todo_categories")
+}
+
+model Todo {
+  todoId         String       @id @default(uuid()) @map("todo_id")
+  userId         String       @map("user_id")
+  todoCategoryId String       @map("todo_category_id")
+  todoTitle      String       @map("title")
+  completed      Boolean      @map("completed")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @default(now()) @updatedAt @map("updated_at")
+  user           User         @relation(fields: [userId], references: [userId])
+  todoCategory   TodoCategory @relation(fields: [todoCategoryId], references: [todoCategoryId])
+
+  @@map("todos")
+}
