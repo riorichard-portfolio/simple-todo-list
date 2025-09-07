@@ -1,4 +1,6 @@
-import { AddTodoRequest, TodoCategoryListRequest, TodoListRequest } from "../joi/interface"
+import { GENERAL_ERROR_MESSAGE } from "../constants/general-error-message"
+import { AddTodoRequest, TodoCategoryListRequest, TodoListRequest, updateTodoRequest } from "../joi/interface"
+import { throwRequestError } from "../middleware/error-handler"
 import prisma from "../models/primsa-client"
 
 const addTodo = async ({ category, name, createdAt }: AddTodoRequest, userId: string) => {
@@ -28,7 +30,14 @@ const addTodo = async ({ category, name, createdAt }: AddTodoRequest, userId: st
 
 const todoList = ({ createdAt }: TodoListRequest, userId: string) => {
     return prisma.todo.findMany({
-        where: { createdAt, userId }
+        where: { createdAt, userId },
+        include: {
+            todoCategory: {
+                select: {
+                    categoryTitle: true
+                }
+            }
+        }
     })
 }
 
@@ -39,8 +48,21 @@ const todoCategoryList = async ({ limit, offset }: TodoCategoryListRequest) => {
     })
 }
 
+const updateTodo = async ({ todoId, completed }: updateTodoRequest) => {
+    const foundTodo = await prisma.todo.findUnique({
+        where: { todoId }
+    })
+    if (!foundTodo) throwRequestError(GENERAL_ERROR_MESSAGE.DATA_NOT_EXISTS)
+    const updatedTodo = await prisma.todo.update({
+        where: { todoId },
+        data: { completed }
+    })
+    return { updatedTodoId: todoId }
+}
+
 export const todoUsecase = {
     addTodo,
     todoList,
-    todoCategoryList
+    todoCategoryList,
+    updateTodo
 }

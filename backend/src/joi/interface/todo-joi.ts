@@ -17,3 +17,8 @@ export interface TodoCategoryListRequest {
 export interface TodoListRequest {
   createdAt: Date;
 }
+
+export interface updateTodoRequest {
+  completed: boolean;
+  todoId: string;
+}

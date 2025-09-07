@@ -13,4 +13,9 @@ export const todoListSchema = Joi.object({
 export const todoCategoryListSchema = Joi.object({
     limit: Joi.number().default(10).optional(),
     offset: Joi.number().default(0).optional()
-}).meta({className: 'TodoCategoryListRequest'})
+}).meta({ className: 'TodoCategoryListRequest' })
+
+export const updateTodoSchema = Joi.object({
+    todoId: Joi.string().uuid().required(),
+    completed: Joi.boolean().required()
+}).meta({className: 'updateTodoRequest'})

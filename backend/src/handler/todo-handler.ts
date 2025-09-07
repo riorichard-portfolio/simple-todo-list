@@ -1,7 +1,7 @@
 import { Request } from "express"
 import { DefaultHandler } from "./type"
 import { validateRequest } from "../utils/common"
-import { addTodoSchema, todoCategoryListSchema, todoListSchema } from "../joi/schema/todo-joi"
+import { addTodoSchema, todoCategoryListSchema, todoListSchema, updateTodoSchema } from "../joi/schema/todo-joi"
 import { todoUsecase } from "../usecase/todo-usecase"
 import { RESPONSE_CODE } from "../constants/response-code"
 
@@ -23,8 +23,15 @@ const todoCategoryList: DefaultHandler = async (req: Request) => {
     return { data }
 }
 
+const updateTodo: DefaultHandler = async (req: Request) => {
+    const validatedBody = validateRequest(updateTodoSchema, req.body)
+    const data = await todoUsecase.updateTodo(validatedBody)
+    return { data }
+}
+
 export const todoHandler = {
     addTodo,
     todoList,
-    todoCategoryList
+    todoCategoryList,
+    updateTodo
 }

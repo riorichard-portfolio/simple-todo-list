@@ -10,5 +10,6 @@ todoRouter.use(authMiddleware)
 todoRouter.post('', h(todoHandler.addTodo)); // add todo
 todoRouter.get('', h(todoHandler.todoList)); // list todo
 todoRouter.get('/categories', h(todoHandler.todoCategoryList)); // list todo categories
+todoRouter.patch('', h(todoHandler.updateTodo))
 
 export default todoRouter;

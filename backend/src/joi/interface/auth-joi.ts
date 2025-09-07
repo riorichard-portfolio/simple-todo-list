@@ -3,6 +3,10 @@
  * Do not modify this file manually
  */
 
+export interface LoginGoogleRequest {
+  credential: string;
+}
+
 export interface LoginRequest {
   email: string;
   password: string;
